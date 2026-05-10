@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     // leave it embty for now
   },
+  reactCompiler: true,
 
   typescript: {
     ignoreBuildErrors: true,
