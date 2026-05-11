@@ -22,9 +22,7 @@ export async function updateUser({
   path: string;
 }) {
   try {
-    console.log("Connecting to database...");
     await connectToDB();
-    console.log("Database connected");
 
     const updatedUser = await User.findOneAndUpdate(
       { id: userId },
@@ -40,12 +38,6 @@ export async function updateUser({
         new: true,
       },
     );
-
-    console.log("User updated successfully:", {
-      id: updatedUser?.id,
-      username: updatedUser?.username,
-      hasImage: !!updatedUser?.image,
-    });
 
     if (path === "/profile/edit") {
       revalidatePath(path);
@@ -95,15 +87,23 @@ export async function getUserThreads(userId: string) {
     const threads = await User.findOne({ id: userId }).populate({
       path: "threads",
       model: "Thread",
-      populate: {
-        path: "children",
-        model: "Thread",
-        populate: {
-          path: "author",
-          model: "User",
-          select: "name image id",
+      populate: [
+        {
+          path: "community",
+          model: "Community",
+          select: "name id image _id",
         },
-      },
+
+        {
+          path: "children",
+          model: "Thread",
+          populate: {
+            path: "author",
+            model: "User",
+            select: "name image id",
+          },
+        },
+      ],
     });
 
     return threads || [];

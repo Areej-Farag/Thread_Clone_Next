@@ -1,6 +1,7 @@
 import { getUserThreads } from "@/lib/actions/user.actions";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
+import { fetchCommunityPosts } from "@/lib/actions/community.actions";
 
 type ThreadsTabProps = {
   currentUser: string;
@@ -13,7 +14,13 @@ export default async function ThreadsTab({
   accountId,
   accountType,
 }: ThreadsTabProps) {
-  const threads = await getUserThreads(accountId);
+  let threads;
+  if (accountType === "User") {
+    threads = await getUserThreads(accountId);
+  } else {
+    threads = await fetchCommunityPosts(accountId);
+  }
+
   console.log(threads);
   if (!threads || threads.length === 0) {
     return (

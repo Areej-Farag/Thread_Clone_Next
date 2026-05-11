@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { dark } from "@clerk/themes";
+
 import { UserButton } from "@clerk/nextjs";
 import {
   OrganizationSwitcher,
@@ -25,20 +27,33 @@ export default function TobBar() {
                   alt="logout"
                   width={24}
                   height={24}
-                  className="flex cursor-pointer"
                 />
               </div>
             </SignOutButton>
           </Show>
         </div>
         <UserButton />
+
         <OrganizationSwitcher
           appearance={{
-            baseTheme: "dark",
+            baseTheme: dark,
 
             elements: {
-              organizationSwitcherTrigger:
-                "py-2 px-4 text-light-1 hover:text-primary-500",
+              organizationSwitcherTrigger: {
+                color: "white",
+              },
+
+              organizationPreviewMainIdentifier: {
+                color: "white",
+              },
+
+              organizationPreviewSecondaryIdentifier: {
+                color: "#d1d5db",
+              },
+
+              organizationSwitcherTriggerIcon: {
+                color: "white",
+              },
             },
           }}
         />

@@ -14,17 +14,20 @@ export async function createCommunity(
   username: string,
   image: string,
   bio: string,
-  createdById: string, // Change the parameter name to reflect it's an id
+  createdById: string,
 ) {
   try {
     connectToDB();
 
-    // Find the user with the provided unique id
-    const user = await User.findOne({ id: createdById });
-
-    if (!user) {
-      throw new Error("User not found"); // Handle the case if the user with the id is not found
+    // 1. تأكد أولاً هل الـ Community موجودة بالفعل؟ (منع التكرار)
+    const existingCommunity = await Community.findOne({ id });
+    if (existingCommunity) {
+      console.log("Community already exists, skipping creation.");
+      return existingCommunity;
     }
+
+    const user = await User.findOne({ id: createdById });
+    if (!user) throw new Error("User not found");
 
     const newCommunity = new Community({
       id,
@@ -32,18 +35,17 @@ export async function createCommunity(
       username,
       image,
       bio,
-      createdBy: user._id, // Use the mongoose ID of the user
+      createdBy: user._id,
     });
 
     const createdCommunity = await newCommunity.save();
 
-    // Update User model
+    // تحديث اليوزر
     user.communities.push(createdCommunity._id);
     await user.save();
 
     return createdCommunity;
   } catch (error) {
-    // Handle any errors
     console.error("Error creating community:", error);
     throw error;
   }
@@ -53,7 +55,7 @@ export async function fetchCommunityDetails(id: string) {
   try {
     connectToDB();
 
-    const communityDetails = await Community.findOne({ id }).populate([
+    const communityDetails = await Community.findOne({ _id: id }).populate([
       "createdBy",
       {
         path: "members",

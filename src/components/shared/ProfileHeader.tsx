@@ -8,6 +8,7 @@ type Props = {
   name: string;
   username: string;
   bio: string;
+  type: "User" | "Community";
   image: string;
 };
 
@@ -18,6 +19,7 @@ export default function ProfileHeader({
   username,
   bio,
   image,
+  type = "User",
 }: Props) {
   return (
     <div className="flex flex-col w-full justify-start">

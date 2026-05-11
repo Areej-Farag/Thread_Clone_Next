@@ -9,7 +9,6 @@ import { usePathname } from "next/navigation";
 export default function LeftSideBar() {
   const pathname = usePathname();
   const { userId } = useAuth();
-  console.log(userId);
 
   return (
     <section className="leftsidebar custom-scrollbar">

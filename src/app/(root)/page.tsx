@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export default async function Home() {
   const threads = await getAllThreads(1, 30);
   const user = await currentUser();
+
   return (
     <main>
       <h1 className="head-text text-left">Home</h1>
@@ -20,6 +21,15 @@ export default async function Home() {
                 username: post.author.username,
                 image: post.author.image,
               }}
+              community={
+                post.community
+                  ? {
+                      id: post.community._id.toString(),
+                      name: post.community.name,
+                      image: post.community.image,
+                    }
+                  : null
+              }
               createdAt={post.createdAt.toISOString()}
               parentId={post.parentId ? post.parentId.toString() : null}
               comments={post.comments}

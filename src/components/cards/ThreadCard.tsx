@@ -1,7 +1,9 @@
 "use client";
+import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface ThreadCardProps {
   id: string | number | undefined;
@@ -36,6 +38,10 @@ export default function ThreadCard({
   currentUserId,
   isComment,
 }: ThreadCardProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const handleShare = async ({
     title,
     text,
@@ -59,6 +65,7 @@ export default function ThreadCard({
       console.warn("Web Share API not supported in this browser.");
     }
   };
+
   return (
     <article
       className={`flex w-full flex-col gap-3 py-3  rounded-xl ${isComment ? "px-0 xs:px-7" : "px-7  bg-dark-2"}`}
@@ -140,6 +147,27 @@ export default function ThreadCard({
           </div>
         </div>
       </div>
+      {!isComment && community && (
+        <Link
+          href={`/communities/${community.id}`}
+          className="mt-5 flex items-center"
+        >
+          <p className="text-subtle-medium text-gray-1">
+            {
+              isMounted
+                ? `${formatDateString(createdAt.toString())} - ${community.name}`
+                : "Loading date..." // أو سيبها فاضية "" لحد ما يحمل
+            }
+          </p>
+          <Image
+            src={community.image}
+            alt={community.name}
+            width={14}
+            height={14}
+            className="ml-1 rounded-full object-cover"
+          />
+        </Link>
+      )}
     </article>
   );
 }

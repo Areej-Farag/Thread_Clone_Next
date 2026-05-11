@@ -1,9 +1,15 @@
 import AccountProfile from "@/components/forms/AccountProfile";
+import { getUser } from "@/lib/actions/user.actions";
 import { User } from "@/types";
 import { currentUser } from "@clerk/nextjs/server";
+import { notFound, redirect } from "next/navigation";
 export default async function onBoardingPage() {
   const clerkUser = await currentUser();
-  const userInfo = {};
+  if (!clerkUser) return notFound();
+
+  const userInfo = await getUser(clerkUser?.id || "");
+
+  if (userInfo?.onboarded) return redirect("/");
 
   const userData: User = {
     id: clerkUser?.id,
