@@ -121,7 +121,6 @@ export default function ThreadCard({
 
                 <Image
                   onClick={() => {
-                    console.log("shareClicked");
                     handleShare({
                       title: `Check out this thread by ${author.username}`,
                       text: content,

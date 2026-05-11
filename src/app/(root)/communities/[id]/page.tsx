@@ -19,7 +19,6 @@ export default async function ProfilePage({
 
   const MyCurrentUser = await currentUser();
   const communityDetails = await fetchCommunityDetails(id);
-  console.log("communityDetails", communityDetails);
 
   return (
     <section>

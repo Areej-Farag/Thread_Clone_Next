@@ -25,7 +25,6 @@ export default function PostThread({ userId }: { userId: string }) {
     e: React.FormEvent,
   ) => {
     e.preventDefault();
-    console.log("Organization", organization);
     try {
       const thread = await createThread({
         text: values.thread,

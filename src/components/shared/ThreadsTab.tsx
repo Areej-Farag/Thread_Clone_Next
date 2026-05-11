@@ -21,7 +21,6 @@ export default async function ThreadsTab({
     threads = await fetchCommunityPosts(accountId);
   }
 
-  console.log(threads);
   if (!threads || threads.length === 0) {
     return (
       <section className="flex items-center justify-center h-48">

@@ -20,7 +20,6 @@ export default async function SearchPage() {
     sortBy: "desc",
   });
 
-  console.log("search results", results);
   return (
     <section>
       <h1 className="head-text mb-10">Search</h1>
